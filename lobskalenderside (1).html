@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NBRO Running Calendar</title>
+<style>
+  :root {
+    --navy: #1f4e79;
+    --navy-dark: #163a5c;
+    --paper: #fafaf8;
+    --ink: #22292f;
+    --muted: #5b6570;
+    --line: #e2e5e8;
+    --accent: #2f7d5a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  header {
+    background: var(--navy);
+    color: #fff;
+    padding: 40px 20px 32px;
+    text-align: center;
+  }
+  header img.logo {
+    display: block;
+    margin: 0 auto 16px;
+    max-height: 72px;
+    width: auto;
+    border-radius: 8px;
+  }
+  header h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  header p {
+    margin: 0;
+    color: #cfe0ee;
+    font-size: 15px;
+  }
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+  nav.toggles {
+    display: flex;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 6px;
+    margin-top: -22px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  nav.toggles button {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  nav.toggles button:hover {
+    background: #f1f3f5;
+  }
+  nav.toggles button.active {
+    background: var(--navy);
+    color: #fff;
+  }
+  section.panel {
+    display: none;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px;
+  }
+  section.panel.active {
+    display: block;
+  }
+  h2 {
+    margin-top: 0;
+    font-size: 20px;
+    color: var(--navy-dark);
+  }
+  p { color: var(--ink); }
+  .muted { color: var(--muted); font-size: 14px; }
+  ol, ul { padding-left: 20px; }
+  li { margin-bottom: 8px; }
+  .cta {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .cta.secondary {
+    background: transparent;
+    color: var(--navy);
+    border: 1px solid var(--navy);
+  }
+  .embed-wrap {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  iframe {
+    display: block;
+    width: 100%;
+    border: none;
+  }
+  .fallback-link {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  .race-list {
+    margin-top: 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .race-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .race-row:last-child {
+    border-bottom: none;
+  }
+  .race-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .race-meta {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .race-row .cta {
+    margin-top: 0;
+    flex-shrink: 0;
+  }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 0 20px 40px;
+  }
+
+  @media (max-width: 600px) {
+    header {
+      padding: 28px 16px 26px;
+    }
+    header img.logo {
+      max-height: 56px;
+    }
+    header h1 {
+      font-size: 22px;
+    }
+    header p {
+      font-size: 14px;
+    }
+    main {
+      padding: 20px 12px 40px;
+    }
+    nav.toggles {
+      margin-top: -18px;
+      gap: 4px;
+      padding: 4px;
+    }
+    nav.toggles button {
+      font-size: 12.5px;
+      padding: 10px 6px;
+    }
+    section.panel {
+      padding: 18px;
+    }
+    .race-row {
+      flex-wrap: wrap;
+      row-gap: 10px;
+    }
+    .race-row .race-main {
+      flex: 1 1 100%;
+    }
+    .race-row .cta {
+      width: 100%;
+      text-align: center;
+    }
+    iframe {
+      min-height: 1300px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img class="logo" src="https://runningcrews.com/_next/image?url=https%3A%2F%2Ft8kzx1ayyrhkfmqg.public.blob.vercel-storage.com%2Fcrews%2Fnbro-running%2Fnbro-running-logo.jpg&w=3840&q=75" alt="NBRO Running logo">
+  <h1>NBRO Running Calendar</h1>
+  <p>A shared overview of races in and around Copenhagen, kept up to date by the community</p>
+</header>
+
+<main>
+  <nav class="toggles">
+    <button class="toggle-btn active" data-target="about">About</button>
+    <button class="toggle-btn" data-target="submit">Submit a race</button>
+    <button class="toggle-btn" data-target="list">See the races</button>
+  </nav>
+
+  <section id="about" class="panel active">
+    <h2>About this calendar</h2>
+    <p>
+      This is a shared, free overview of races in and around Copenhagen – from
+      short fun runs to half and full marathons. Anyone can submit a race, and
+      anyone can view the list without needing to request access to anything.
+    </p>
+    <p>Here's how it works:</p>
+    <ol>
+      <li>You submit a race through a short form (name, date, distance(s), location, and sign-up link).</li>
+      <li>We check for duplicates and review the submission.</li>
+      <li>The approved race shows up automatically in the public list – usually within an hour.</li>
+    </ol>
+    <p class="muted">
+      We don't use your information for anything beyond what's needed for the
+      race listing itself (name, date, distance, location, and sign-up link).
+    </p>
+    <p class="muted">Got suggestions for improvements? Send them to <a href="mailto:askhybel@gmail.com">askhybel@gmail.com</a>.</p>
+  </section>
+
+  <section id="submit" class="panel">
+    <h2>Submit a race</h2>
+    <p>Fill out the form below – it takes less than a minute. Know a race that's not on the list yet? Share it with fellow runners.</p>
+    <div class="embed-wrap">
+      <iframe
+        src="https://docs.google.com/forms/d/e/1FAIpQLSfjESMjJFq8D1udm8DxTwtfu3-FW7X8YEOSgzIhTfgJhwDEtg/viewform?embedded=true"
+        height="1100"
+        loading="lazy">
+        Loading form…
+      </iframe>
+    </div>
+    <p class="fallback-link">
+      Form not displaying properly?
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfjESMjJFq8D1udm8DxTwtfu3-FW7X8YEOSgzIhTfgJhwDEtg/viewform" target="_blank" rel="noopener">Open it in a new window</a>.
+    </p>
+  </section>
+
+  <section id="list" class="panel">
+    <h2>See the races</h2>
+    <p>All published races – name, date, distance and sign-up link – sorted by date.</p>
+    <div id="race-list" class="race-list">
+      <p class="muted" style="padding:16px;">Loading races…</p>
+    </div>
+    <p class="fallback-link">
+      Prefer to subscribe with your own calendar app?
+      <a href="https://calendar.google.com/calendar/ical/caba4e0680fab70b538ca8829cf788778e5f43c8d8cf562b5adf915c5bf1fd50%40group.calendar.google.com/public/basic.ics" target="_blank" rel="noopener">Get the iCal link here</a>,
+      or <a href="https://calendar.google.com/calendar/embed?src=caba4e0680fab70b538ca8829cf788778e5f43c8d8cf562b5adf915c5bf1fd50%40group.calendar.google.com&ctz=Europe%2FCopenhagen&mode=AGENDA" target="_blank" rel="noopener">view the full calendar</a>.
+    </p>
+  </section>
+</main>
+
+<footer>
+  NBRO Running Calendar · races submitted by the community
+</footer>
+
+<script>
+  // ---- Tabs, with bookmarkable #about / #submit / #list links ----
+  var VALID_TABS = ['about', 'submit', 'list'];
+
+  function activateTab(id, updateHash) {
+    if (VALID_TABS.indexOf(id) === -1) id = 'about';
+    document.querySelectorAll('.toggle-btn').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.target === id);
+    });
+    document.querySelectorAll('.panel').forEach(function (p) {
+      p.classList.toggle('active', p.id === id);
+    });
+    if (updateHash && window.location.hash !== '#' + id) {
+      history.pushState(null, '', '#' + id);
+    }
+  }
+
+  document.querySelectorAll('.toggle-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      activateTab(btn.dataset.target, true);
+    });
+  });
+
+  window.addEventListener('hashchange', function () {
+    activateTab(window.location.hash.replace('#', ''), false);
+  });
+
+  // Open on whichever tab is in the URL when the page loads (falls back to "about")
+  activateTab(window.location.hash.replace('#', ''), false);
+
+  // ---- Race list: fetched from the Apps Script Web App (doGet in Kode_sync_til_kalender.gs) ----
+  // Set the URL here once you've deployed the script as a web app (see the setup guide).
+  var RACES_API_URL = 'SET-WEB-APP-URL-HERE';
+  var CALENDAR_FALLBACK_URL = 'https://calendar.google.com/calendar/embed?src=caba4e0680fab70b538ca8829cf788778e5f43c8d8cf562b5adf915c5bf1fd50%40group.calendar.google.com&ctz=Europe%2FCopenhagen&mode=AGENDA';
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function formatDate(iso) {
+    var d = new Date(iso + 'T00:00:00');
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function renderRaces(races) {
+    var container = document.getElementById('race-list');
+    if (!races || !races.length) {
+      container.innerHTML = '<p class="muted" style="padding:16px;">No races have been published yet.</p>';
+      return;
+    }
+    container.innerHTML = races.map(function (r) {
+      var link = r.link ? '<a class="cta" href="' + escapeHtml(r.link) + '" target="_blank" rel="noopener">Sign up</a>' : '';
+      var meta = formatDate(r.dato) + (r.distance ? ' · ' + escapeHtml(r.distance) : '');
+      return '<div class="race-row">' +
+               '<div class="race-main">' +
+                 '<div class="race-name">' + escapeHtml(r.navn) + '</div>' +
+                 '<div class="race-meta">' + meta + '</div>' +
+               '</div>' +
+               link +
+             '</div>';
+    }).join('');
+  }
+
+  function loadRaces() {
+    var container = document.getElementById('race-list');
+    if (!RACES_API_URL || RACES_API_URL.indexOf('SET-') === 0) {
+      container.innerHTML = '<p class="muted" style="padding:16px;">The list isn\'t set up yet – add the Web App URL in the page source. In the meantime, see the ' +
+        '<a href="' + CALENDAR_FALLBACK_URL + '" target="_blank" rel="noopener">calendar</a>.</p>';
+      return;
+    }
+    fetch(RACES_API_URL)
+      .then(function (res) {
+        if (!res.ok) throw new Error('Network error: ' + res.status);
+        return res.json();
+      })
+      .then(renderRaces)
+      .catch(function () {
+        container.innerHTML = '<p class="muted" style="padding:16px;">The list couldn\'t be loaded right now. See the ' +
+          '<a href="' + CALENDAR_FALLBACK_URL + '" target="_blank" rel="noopener">calendar</a> instead.</p>';
+      });
+  }
+
+  loadRaces();
+</script>
+
+</body>
+</html>
