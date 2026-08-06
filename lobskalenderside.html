@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Løbskalender – København</title>
+<style>
+  :root {
+    --navy: #1f4e79;
+    --navy-dark: #163a5c;
+    --paper: #fafaf8;
+    --ink: #22292f;
+    --muted: #5b6570;
+    --line: #e2e5e8;
+    --accent: #2f7d5a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  header {
+    background: var(--navy);
+    color: #fff;
+    padding: 40px 20px 32px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  header p {
+    margin: 0;
+    color: #cfe0ee;
+    font-size: 15px;
+  }
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+  nav.toggles {
+    display: flex;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 6px;
+    margin-top: -22px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  nav.toggles button {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  nav.toggles button:hover {
+    background: #f1f3f5;
+  }
+  nav.toggles button.active {
+    background: var(--navy);
+    color: #fff;
+  }
+  section.panel {
+    display: none;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 28px;
+  }
+  section.panel.active {
+    display: block;
+  }
+  h2 {
+    margin-top: 0;
+    font-size: 20px;
+    color: var(--navy-dark);
+  }
+  p { color: var(--ink); }
+  .muted { color: var(--muted); font-size: 14px; }
+  ol, ul { padding-left: 20px; }
+  li { margin-bottom: 8px; }
+  .cta {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .cta.secondary {
+    background: transparent;
+    color: var(--navy);
+    border: 1px solid var(--navy);
+  }
+  .embed-wrap {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  iframe {
+    display: block;
+    width: 100%;
+    border: none;
+  }
+  .fallback-link {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 0 20px 40px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Løbskalender – København</h1>
+  <p>Et fælles overblik over løb i KBH-området, holdt ved af folk udefra</p>
+</header>
+
+<main>
+  <nav class="toggles">
+    <button class="toggle-btn active" data-target="om">Om kalenderen</button>
+    <button class="toggle-btn" data-target="indsend">Indsend et løb</button>
+    <button class="toggle-btn" data-target="se">Se løbene</button>
+  </nav>
+
+  <section id="om" class="panel active">
+    <h2>Om kalenderen</h2>
+    <p>
+      Det her er et fælles, gratis overblik over løb i og omkring København – fra
+      korte fun-runs til halv- og hel-marathon. Alle kan indsende et løb, og
+      alle kan se listen uden at skulle bede om adgang til noget.
+    </p>
+    <p>Sådan hænger det sammen:</p>
+    <ol>
+      <li>Du indsender et løb via en kort formular (navn, dato, distance(r), sted og tilmeldingslink).</li>
+      <li>Vi tjekker for dubletter og godkender indsendelsen.</li>
+      <li>Det godkendte løb dukker automatisk op i den offentlige kalenderliste – typisk inden for en time.</li>
+    </ol>
+    <p class="muted">
+      Vi rører ikke ved dine oplysninger udover det, der skal med i selve
+      kalenderbegivenheden (navn, dato, distance, sted og tilmeldingslink).
+    </p>
+    <p class="muted">Kalenderen er startet af Ask Hybel fra NBRO Running.</p>
+  </section>
+
+  <section id="indsend" class="panel">
+    <h2>Indsend et løb</h2>
+    <p>Udfyld formularen nedenfor – det tager under et minut. Kender du et løb, der ikke er på listen, så del det med alle andre løbere.</p>
+    <div class="embed-wrap">
+      <iframe
+        src="https://docs.google.com/forms/d/e/1FAIpQLSfjESMjJFq8D1udm8DxTwtfu3-FW7X8YEOSgzIhTfgJhwDEtg/viewform?embedded=true"
+        height="1100"
+        loading="lazy">
+        Indlæser formular…
+      </iframe>
+    </div>
+    <p class="fallback-link">
+      Ser formularen ikke ordentlig ud?
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfjESMjJFq8D1udm8DxTwtfu3-FW7X8YEOSgzIhTfgJhwDEtg/viewform" target="_blank" rel="noopener">Åbn den i et nyt vindue</a>.
+    </p>
+  </section>
+
+  <section id="se" class="panel">
+    <h2>Se løbene</h2>
+    <p>Alle godkendte løb, som en liste sorteret efter dato.</p>
+    <div class="embed-wrap">
+      <iframe
+        src="https://calendar.google.com/calendar/embed?src=caba4e0680fab70b538ca8829cf788778e5f43c8d8cf562b5adf915c5bf1fd50%40group.calendar.google.com&ctz=Europe%2FCopenhagen&mode=AGENDA&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0"
+        height="650"
+        loading="lazy">
+        Indlæser kalender…
+      </iframe>
+    </div>
+    <p class="fallback-link">
+      Vil du abonnere med din egen kalenderapp?
+      <a href="https://calendar.google.com/calendar/ical/caba4e0680fab70b538ca8829cf788778e5f43c8d8cf562b5adf915c5bf1fd50%40group.calendar.google.com/public/basic.ics" target="_blank" rel="noopener">Hent iCal-linket her</a>.
+    </p>
+  </section>
+</main>
+
+<footer>
+  Løbskalender – København · startet af Ask Hybel, NBRO Running · løb indsendt af fællesskabet
+</footer>
+
+<script>
+  document.querySelectorAll('.toggle-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.toggle-btn').forEach(function (b) { b.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.target).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
